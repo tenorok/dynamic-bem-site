@@ -1,0 +1,28 @@
+block('contacts').content()(function() {
+
+    var id = this.data.id;
+
+    return this.doAsync(function() {
+
+        var promise = Vow.promise();
+
+        Mongo.MongoClient.connect('mongodb://localhost/dynamic-bem-site', function(error, db) {
+            if(error) return promise.reject(new Error('Mongodb error: ', err));
+
+            db.collection('contacts').find().toArray(function(error, data) {
+                promise.fulfill(id !== undefined ? [data[id]] : data);
+            });
+        });
+
+        return promise;
+
+    }).then(function(contacts) {
+
+        return applyCtx(contacts.map(function(contact) {
+            contact.block = 'contact';
+            return contact;
+        }));
+
+    });
+
+});

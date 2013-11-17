@@ -1,0 +1,13 @@
+block('contact').elem('social')(
+
+    tag()('a'),
+
+    attrs()(function() {
+        return { href: this.ctx.url || '#' };
+    }),
+
+    content()(function() {
+        return this.ctx.service
+    })
+
+);

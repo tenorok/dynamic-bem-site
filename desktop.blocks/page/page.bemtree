@@ -1,0 +1,61 @@
+block page {
+
+    default: {
+        var head = apply('head');
+        return applyCtx({
+            block : this.block,
+            mods  : this.ctx.mods,
+            head  : head,
+            title : this.data.pageTitle,
+            content : this.ctx.content
+        });
+    }
+
+    asset, this.elem !== '': {
+        return {
+            prefix : ['_', this.data.bundleName].join(''),
+            suffix  : this.ctx._type
+        };
+    }
+
+    head: {
+        return applyCtx([
+            { elem : 'css' },
+            { elem : 'js' }
+        ]);
+    }
+
+    mod error not-found, content: 'Nothing found'
+
+    elem css {
+
+        default: {
+            var url = apply('asset', this.ctx._type = 'css'),
+                elem = this.elem;
+            return applyCtx([
+                {
+                    elem : elem,
+                    url : url.prefix + '.' + url.suffix,
+                    ie  : false
+                },
+                {
+                    elem : elem,
+                    url  : url.prefix + '.ie.' + url.suffix,
+                    ie : 'lte IE 9'
+                }
+            ]);
+        }
+
+    }
+
+    elem js {
+
+        default: {
+            var url = apply('asset', this.ctx._type = 'js');
+            this.ctx.url = url.prefix + '.' + url.suffix;
+            return this.ctx;
+        }
+
+    }
+
+}

@@ -1,0 +1,2 @@
+typeof Mongo === 'undefined' &&
+    (Mongo = require('mongodb'));

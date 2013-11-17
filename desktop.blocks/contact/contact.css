@@ -1,0 +1,20 @@
+.contact
+{
+    position: relative;
+
+    display: inline-block;
+
+    width: 400px;
+    min-height: 106px;
+    margin: 10px;
+    padding: 14px;
+
+    cursor: pointer;
+    vertical-align: top;
+
+    border: 1px solid #CBCBC9;
+    border-radius: 5px;
+    background: #fff;
+
+    font: 12px/16px normal arial, sans-serif;
+}

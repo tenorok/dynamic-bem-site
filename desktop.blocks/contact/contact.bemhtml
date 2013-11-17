@@ -1,0 +1,78 @@
+block('contact')(
+
+    js()(true),
+
+    match(this.ctx.customize)(function() {
+        this.ctx.mods = { customize: this.ctx.customize };
+        applyNext();
+    }),
+
+    content()(function() {
+
+        this.ctx.details = (this.ctx.details || []).map(function(detail) {
+            var key = Object.keys(detail)[0];
+            return {
+                elem: 'detail',
+                field: key,
+                value: detail[key]
+            };
+        });
+
+        var socialContent = [];
+
+        for(var social in (this.ctx.social || {})) if(this.ctx.social.hasOwnProperty(social)) {
+            socialContent.push({
+                elem: 'social',
+                mods: { service: social },
+                service: social,
+                url: this.ctx.social[social]
+            });
+        }
+
+        return [
+            {
+                elem: 'photo',
+                content: this.ctx.photo || 'http://tenorok.github.io/shri-bem-practice/store/mrx.jpeg'
+            },
+            {
+                elem: 'group',
+                content: this.ctx.group || ''
+            },
+            {
+                elem: 'info',
+                content: [
+                    {
+                        elem: 'name',
+                        content: this.ctx.name || 'MrX'
+                    },
+                    {
+                        elem: 'phone',
+                        content: this.ctx.phone || ''
+                    },
+                    {
+                        elem: 'address',
+                        content: this.ctx.address || ''
+                    },
+                    {
+                        elem: 'email',
+                        content: this.ctx.email || ''
+                    },
+                    {
+                        elem: 'more',
+                        content: [
+                            (this.ctx.details.length && {
+                                elem: 'details',
+                                content: this.ctx.details
+                            } || ''),
+                            (socialContent.length && {
+                                elem: 'links',
+                                content: socialContent
+                            } || '')
+                        ]
+                    }
+                 ]
+            }
+        ];
+
+    })
+);

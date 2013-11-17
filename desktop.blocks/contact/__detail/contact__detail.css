@@ -1,0 +1,9 @@
+.contact__detail
+{
+    vertical-align: top;
+}
+
+.contact__detail td:first-child
+{
+    width: 100px;
+}

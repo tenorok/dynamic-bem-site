@@ -1,0 +1,13 @@
+match(!this.data)(function() {
+
+    this.data = {
+        bundleName: this.ctx.bundleName,
+        id: this.ctx.id
+    };
+
+    return applyCtx({
+        block: 'page',
+        content: { block: 'contacts' }
+    });
+
+});
