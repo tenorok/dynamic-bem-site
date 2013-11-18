@@ -18,11 +18,13 @@ block('contacts').content()(function() {
 
     }).then(function(contacts) {
 
+        this.data.pageTitle = contacts.length > 1 ? 'Все контакты' : contacts[0].name;
+
         return applyCtx(contacts.map(function(contact) {
             contact.block = 'contact';
             return contact;
         }));
 
-    });
+    }.bind(this));
 
 });

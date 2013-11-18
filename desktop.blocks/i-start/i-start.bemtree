@@ -5,9 +5,13 @@ match(!this.data)(function() {
         id: this.ctx.id
     };
 
-    return applyCtx({
-        block: 'page',
-        content: { block: 'contacts' }
+    return Vow.when(applyCtx({ block: 'contacts' }).content).then(function(contacts) {
+
+        return applyCtx({
+            block: 'page',
+            content: contacts
+        });
+
     });
 
 });
