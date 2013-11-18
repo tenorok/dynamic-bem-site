@@ -1,0 +1,19 @@
+block('mongo').elem('connect').match(!this.db).def()(function() {
+
+    return this.doAsync(function() {
+
+        var promise = this.db = Vow.promise(),
+            host = this.ctx.host || 'localhost';
+
+        Mongo.MongoClient.connect('mongodb://' + host+ '/' + this.ctx.db, function(error, db) {
+            if(error) return promise.reject(new Error('Mongodb error: ', err));
+            promise.fulfill(db);
+        });
+
+        return promise;
+
+    }.bind(this)).then(function(db) {
+        return db;
+    });
+
+});

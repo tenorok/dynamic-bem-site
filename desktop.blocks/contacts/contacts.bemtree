@@ -1,14 +1,11 @@
 block('contacts').content()(function() {
 
-    var id = this.data.id;
-
     return this.doAsync(function() {
 
-        var promise = Vow.promise();
+        var promise = Vow.promise(),
+            id = this.data.id;
 
-        Mongo.MongoClient.connect('mongodb://localhost/dynamic-bem-site', function(error, db) {
-            if(error) return promise.reject(new Error('Mongodb error: ', err));
-
+        Vow.when(this.db).then(function(db) {
             db.collection('contacts').find().toArray(function(error, data) {
                 promise.fulfill(id !== undefined ? [data[id]] : data);
             });
@@ -16,7 +13,7 @@ block('contacts').content()(function() {
 
         return promise;
 
-    }).then(function(contacts) {
+    }.bind(this)).then(function(contacts) {
 
         this.data.pageTitle = contacts.length > 1 ? 'Все контакты' : contacts[0].name;
 

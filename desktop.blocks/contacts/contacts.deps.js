@@ -7,8 +7,7 @@
 },
 {
     mustDeps: [
-        { block: 'fs' },
-        { block: 'mongo' }
+        { block: 'fs' }
     ],
     shouldDeps: [
         { block: 'contact' }
