@@ -1,2 +1,0 @@
-typeof Fs === 'undefined' &&
-    (Fs = require('fs'));
