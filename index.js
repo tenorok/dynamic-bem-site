@@ -1,49 +1,50 @@
-var path = require('path'),
-    express = require('express'),
+var express = require('express'),
     params = require('express-params'),
-    app = express(),
 
-    bundlesPath = path.join(__dirname, 'desktop.bundles'),
-    bundleName = 'index',
-    bundlePath = path.join(bundlesPath, bundleName),
-    bundleBEMHTMLPath = path.join(bundlePath, bundleName + '.bemhtml.js'),
-    bundleBEMTREEPath = path.join(bundlePath, bundleName + '.bemtree.js'),
+    contacts = require('./contacts'),
 
-    BEMHTML = require(bundleBEMHTMLPath).BEMHTML,
-    BEMTREE = require(bundleBEMTREEPath).BEMTREE;
+    Bundle = require('./bundle').Bundle,
+    bundleIndex = new Bundle('index'),
+    bundleIndexInfo = bundleIndex.getInfo(),
 
-app.use(express.static(bundlePath));
+    app = express();
+
+app.use(express.static(__dirname));
+app.use(express.static(bundleIndexInfo.bundlePath));
 params.extend(app);
 
 app.param('id', Number);
 
-app.get('/:id?', response);
-['/.bemjson', '/:id.bemjson'].forEach(function(route) {
-    app.get(route, responseBemjson);
-});
+app.get('/:id?', bundleIndex.make(), sendContacts);
+app.get('/api/contacts/:id?', sendContactsJSON);
 
 app.listen(3000, function() {
     console.log('Express server listening on port 3000');
 });
 
-function response(req, res) {
-    BEMTREEApply(req, res, function(bemjson) {
-        return BEMHTML.apply(bemjson);
+function sendContacts(req, res) {
+
+    contacts.getContacts(req, function(data) {
+
+        var indexPage = data.length > 1,
+
+            params = {
+                block: 'page',
+                js: bundleIndexInfo.jsFile,
+                css: bundleIndexInfo.cssFile,
+                title: indexPage ? 'Все контакты' : data[0].name,
+                addButton: indexPage,
+                contacts: data
+            };
+
+        return bundleIndexInfo.BEMTREE.apply(params).then(function(bemjson) {
+            res.send(bundleIndexInfo.BEMHTML.apply(bemjson));
+        });
     });
 }
 
-function responseBemjson(req, res) {
-    BEMTREEApply(req, res, function(bemjson) {
-        return '<pre>' + JSON.stringify(bemjson, null, 4) + '</pre>';
-    });
-}
-
-function BEMTREEApply(req, res, cb) {
-
-    BEMTREE.bundleName = bundleName;
-    BEMTREE.id = req.params.id;
-
-    BEMTREE.apply().then(function(bemjson) {
-        res.send(cb.call(this, bemjson));
+function sendContactsJSON(req, res) {
+    contacts.getContacts(req, function(data) {
+        res.send(data);
     });
 }
