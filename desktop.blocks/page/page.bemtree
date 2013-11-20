@@ -1,0 +1,19 @@
+block('page').def()(function() {
+
+    this.ctx = {
+        block: this.block,
+        title: this.ctx.title,
+        head: [
+            { elem: 'css', url: this.ctx.css, ie: false },
+            { elem: 'js', url: this.ctx.js }
+        ],
+        content: {
+            block: 'contacts',
+            addButton: this.ctx.addButton,
+            content: this.ctx.contacts
+        }
+    };
+
+    return applyNext();
+
+});
