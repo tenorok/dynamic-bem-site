@@ -75,6 +75,8 @@ Bundle.prototype = {
 
     make: function() {
         return function(req, res, next) {
+            if(process.env.NODE_ENV === 'production') { next(); return; }
+
             var info = this.info || this.getInfo();
             vow.when(bem.api.make({ verbosity: 'debug' }, [info.bundlePath])).then(function() {
                 delete require.cache[info.BEMHTMLPath];

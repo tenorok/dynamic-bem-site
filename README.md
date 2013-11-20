@@ -30,6 +30,14 @@
 * [localhost:3000/.bemjson](http://localhost:3000/.bemjson) — посмотреть сформированный bemjson для всего списка контактов
 * [localhost:3000/:id.bemjson](http://localhost:3000/0.bemjson) — bemjson для одного контакта
 
+## Режимы запуска
+
+### Production
+
+В этом режиме не осуществляется сборка проекта при запросах.
+
+    NODE_ENV=production node index.js
+
 ## Материалы
 
 * [Лекции Школы Разработки Интерфейсов Яндекса](http://tech.yandex.ru/education/shri/)
