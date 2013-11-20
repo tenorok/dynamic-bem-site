@@ -34,7 +34,8 @@ DOM.decl('contacts', /** @lends Contacts.prototype */ {
      * Подписаться на событие добавления контакта
      */
     listenAddContact : function() {
-        this.findBlockInside('add-contact').on('add', this.addContact.bind(this));
+        var addContact = this.findBlockInside('add-contact');
+        if(addContact) addContact.on('add', this.addContact.bind(this));
     },
 
     /**
