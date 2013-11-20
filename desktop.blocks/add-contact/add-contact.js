@@ -13,7 +13,7 @@ DOM.decl('add-contact', /** @lends Add-contact.prototype */ {}, /** @lends Add-c
 
                 var that = this;
 
-                $.ajax('/store/all.json').done(function(data) {
+                $.ajax('/api/contacts').done(function(data) {
 
                     var contact = data[Math.floor(Math.random() * data.length)];
 
