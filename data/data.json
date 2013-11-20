@@ -86,6 +86,7 @@
         }
     },
     {
+        "customize": "vip",
         "photo": "http://tenorok.github.io/shri-bem-practice/store/monty.png",
         "group": "работа",
         "name": "Чарльз Монтгомери Бёрнс",
@@ -119,6 +120,7 @@
         }
     },
     {
+        "customize": "vip",
         "photo": "http://tenorok.github.io/shri-bem-practice/store/quimby.png",
         "name": "Джозеф Фицпатрик Фицджеральд Фицэнри Квимби младший",
         "phone": "+7 232 232-22-22",
