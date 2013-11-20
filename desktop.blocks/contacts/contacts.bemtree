@@ -1,27 +1,18 @@
-block('contacts').content()(function() {
+block('contacts')(
 
-    return this.doAsync(function() {
+    content().match(this.ctx.addButton)(function() {
+        this.ctx.content.push({ block: 'add-contact', content: 'Добавить контакт' });
+    }),
 
-        var promise = Vow.promise(),
-            id = this.data.id;
+    content()(function() {
 
-        Vow.when(this.db).then(function(db) {
-            db.collection('contacts').find().toArray(function(error, data) {
-                promise.fulfill(id !== undefined ? [data[id]] : data);
-            });
-        });
+        var content = this.ctx.content;
 
-        return promise;
+        content.forEach(function(contact) { contact.block = 'contact'; });
+        content = [{ elem: 'list', content: content }];
 
-    }.bind(this)).then(function(contacts) {
+        return applyNext();
 
-        this.data.pageTitle = contacts.length > 1 ? 'Все контакты' : contacts[0].name;
+    })
 
-        return applyCtx(contacts.map(function(contact) {
-            contact.block = 'contact';
-            return contact;
-        }));
-
-    }.bind(this));
-
-});
+);

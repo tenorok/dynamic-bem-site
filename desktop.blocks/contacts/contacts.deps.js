@@ -6,10 +6,8 @@
     }
 },
 {
-    mustDeps: [
-        { block: 'fs' }
-    ],
     shouldDeps: [
-        { block: 'contact' }
+        { block: 'contact' },
+        { block: 'add-contact' }
     ]
 }])
