@@ -6,7 +6,7 @@ modules.define('i-bem__dom', ['jquery', 'BEMHTML'], function(provide, $, BEMHTML
 */
 DOM.decl('add-contact', /** @lends Add-contact.prototype */ {}, /** @lends Add-contact */ {
 
-    live : function() {
+    live: function() {
 
         this
             .liveBindTo('button', 'click', function() {

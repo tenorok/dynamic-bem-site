@@ -6,7 +6,7 @@ modules.define('i-bem__dom', function(provide, DOM) {
  */
 DOM.decl('contact', /** @lends Contact.prototype */ {
 
-    getDefaultParams : function() {
+    getDefaultParams: function() {
         return {
             slideDuration: 200
         };
@@ -16,7 +16,7 @@ DOM.decl('contact', /** @lends Contact.prototype */ {
      * Скрыть/показать детальные данные по контакту
      * @returns {this}
      */
-    toggle : function() {
+    toggle: function() {
         return this.hasMod('details') ? this.hide() : this.show();
     },
 
@@ -24,7 +24,7 @@ DOM.decl('contact', /** @lends Contact.prototype */ {
      * Показать детальные данные по контакту
      * @returns {this}
      */
-    show : function() {
+    show: function() {
         this.emit('show');
         this.elem('more').slideDown(this.params.slideDuration);
         return this.setMod('details');
@@ -34,7 +34,7 @@ DOM.decl('contact', /** @lends Contact.prototype */ {
      * Скрыть детальные данные по контакту
      * @returns {this}
      */
-    hide : function() {
+    hide: function() {
         this.emit('hide');
         this.elem('more').slideUp(this.params.slideDuration);
         return this.delMod('details');
@@ -42,7 +42,7 @@ DOM.decl('contact', /** @lends Contact.prototype */ {
 
 }, /** @lends Contact */ {
 
-    live : function() {
+    live: function() {
 
         this
             .liveBindTo('click', function() {
