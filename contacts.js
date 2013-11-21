@@ -1,6 +1,11 @@
 var mongodb = require('mongodb'),
     vow = require('vow');
 
+/**
+ * Получить данные по контактам в JSON
+ * @param req
+ * @param {Function} callback Функция будет вызвана с аргументом полученных данных
+ */
 function getContacts(req, callback) {
 
     var promise = vow.promise();

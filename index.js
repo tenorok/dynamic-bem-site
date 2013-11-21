@@ -22,6 +22,11 @@ app.listen(3000, function() {
     console.log('Express server listening on port 3000');
 });
 
+/**
+ * Отправить HTML-страницу с контактами
+ * @param req
+ * @param res
+ */
 function sendContacts(req, res) {
 
     contacts.getContacts(req, function(data) {
@@ -43,8 +48,14 @@ function sendContacts(req, res) {
     });
 }
 
+/**
+ * Отправить JSON с данными по контактам или одному контакту
+ * @param req
+ * @param res
+ */
 function sendContactsJSON(req, res) {
     contacts.getContacts(req, function(data) {
+        res.header('Content-Type', 'application/json');
         res.send(data);
     });
 }

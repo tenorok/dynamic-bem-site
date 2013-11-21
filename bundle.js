@@ -19,9 +19,84 @@ function Bundle(name, context) {
 
 Bundle.prototype = {
 
-    _getBEMTREE: function(BEMTREEPath) {
+    /**
+     * @typedef bundlePathInfo
+     * @type {Object}
+     * @property {String} bundlesPath Путь до всех бандлов
+     * @property {String} bundlePath Путь до текущего бандла
+     * @property {String} BEMHTMLFile Путь до BEMHTML-файла бандла
+     * @property {String} BEMTREEFile Путь до BEMTREE-файла бандла
+     * @property {String} jsFile Путь до JS-файла бандла
+     * @property {String} cssFile Путь до CSS-файла бандла
+     */
 
-        var BEMTREEContent = fs.readFileSync(BEMTREEPath, 'utf-8'),
+    /**
+     * Получить информацию по путям до директорий и файлов бандла
+     * @returns {bundlePathInfo} Объект с информацией по путям для бандла
+     */
+    getPath: function() {
+
+        var bundlesPath = path.join(__dirname, 'desktop.bundles'),
+            bundlePath = path.join(bundlesPath, this.name),
+
+            BEMHTMLFile = path.join(bundlePath, this.name + '.bemhtml.js'),
+            BEMTREEPath = path.join(bundlePath, this.name + '.bemtree.js');
+
+        return {
+
+            bundlesPath: bundlesPath,
+            bundlePath: bundlePath,
+
+            BEMHTMLFile: BEMHTMLFile,
+            BEMTREEFile: BEMTREEPath,
+
+            jsFile: '_' + this.name + '.js',
+            cssFile: '_' + this.name + '.css'
+        };
+    },
+
+    /**
+     * Получить информацию по бандлу
+     * @property {Object} bundlePathInfo.BEMHTML Объект для работы с BEMHTML
+     * @property {Object} bundlePathInfo.BEMTREE Объект для работы с BEMTREE
+     * @returns {bundlePathInfo}
+     */
+    getInfo: function() {
+
+        var path = this.getPath();
+
+        path.BEMHTML = require(path.BEMHTMLFile).BEMHTML;
+        path.BEMTREE = this._getBEMTREE(path.BEMTREEFile);
+
+        return this.info = path;
+    },
+
+    /**
+     * Собрать бандл
+     * @returns {Function}
+     */
+    make: function() {
+        return function(req, res, next) {
+            if(process.env.NODE_ENV === 'production') { next(); return; }
+
+            var info = this.info || this.getInfo();
+            vow.when(bem.api.make({ verbosity: 'debug' }, [info.bundlePath])).then(function() {
+                delete require.cache[info.BEMHTMLPath];
+                this.info.BEMTREE = this._getBEMTREE(info.BEMTREEPath);
+                next();
+            }.bind(this));
+        }.bind(this);
+    },
+
+    /**
+     * Получить переменную BEMTREE с нужным контекстом
+     * @param {String} BEMTREEFile Путь до BEMTREE-файла бандла
+     * @returns {Object}
+     * @private
+     */
+    _getBEMTREE: function(BEMTREEFile) {
+
+        var BEMTREEContent = fs.readFileSync(BEMTREEFile, 'utf-8'),
 
             context = bem.util.extend({
 
@@ -35,55 +110,6 @@ Bundle.prototype = {
         vm.runInNewContext(BEMTREEContent, context);
 
         return context.BEMTREE;
-    },
-
-    getPath: function() {
-
-        var bundlesPath = path.join(__dirname, 'desktop.bundles'),
-            bundlePath = path.join(bundlesPath, this.name),
-
-            BEMHTMLPath = path.join(bundlePath, this.name + '.bemhtml.js'),
-            BEMTREEPath = path.join(bundlePath, this.name + '.bemtree.js');
-
-        return {
-
-            bundlesPath: bundlesPath,
-            bundlePath: bundlePath,
-
-            BEMHTMLPath: BEMHTMLPath,
-            BEMTREEPath: BEMTREEPath,
-
-            BEMHTML: require(BEMHTMLPath).BEMHTML,
-
-            jsFile: '_' + this.name + '.js',
-            cssFile: '_' + this.name + '.css'
-        };
-    },
-
-    /**
-     * Получить информацию по бандлу
-     * @returns {Object}
-     */
-    getInfo: function() {
-
-        var path = this.getPath();
-
-        path.BEMTREE = this._getBEMTREE(path.BEMTREEPath);
-
-        return this.info = path;
-    },
-
-    make: function() {
-        return function(req, res, next) {
-            if(process.env.NODE_ENV === 'production') { next(); return; }
-
-            var info = this.info || this.getInfo();
-            vow.when(bem.api.make({ verbosity: 'debug' }, [info.bundlePath])).then(function() {
-                delete require.cache[info.BEMHTMLPath];
-                this.info.BEMTREE = this._getBEMTREE(info.BEMTREEPath);
-                next();
-            }.bind(this));
-        }.bind(this);
     }
 
 };
