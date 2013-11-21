@@ -82,9 +82,9 @@ Bundle.prototype = {
             var info = this.info || this.getInfo();
             vow.when(bem.api.make({ verbosity: 'debug' }, [info.bundlePath])).then(function() {
                 delete require.cache[info.BEMHTMLPath];
-                this.info.BEMTREE = this._getBEMTREE(info.BEMTREEPath);
+                this.info.BEMTREE = this._getBEMTREE(info.BEMTREEFile);
                 next();
-            }.bind(this));
+            }.bind(this)).done();
         }.bind(this);
     },
 
