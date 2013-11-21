@@ -11,18 +11,17 @@ DOM.decl('add-contact', /** @lends Add-contact.prototype */ {}, /** @lends Add-c
         this
             .liveBindTo('button', 'click', function() {
 
-                var that = this;
-
                 $.ajax('/api/contacts').done(function(data) {
 
                     var contact = data[Math.floor(Math.random() * data.length)];
 
                     contact.block = 'contact';
 
-                    that.emit('add', {
+                    this.emit('add', {
                         html: BEMHTML.apply(contact)
                     });
-                });
+
+                }.bind(this));
             });
 
         return false;

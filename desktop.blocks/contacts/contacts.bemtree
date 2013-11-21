@@ -9,7 +9,7 @@ block('contacts')(
         var content = this.ctx.content;
 
         content.forEach(function(contact) { contact.block = 'contact'; });
-        content = [{ elem: 'list', content: content }];
+        this.ctx.content = [{ elem: 'list', content: content }];
 
         return applyNext();
 
