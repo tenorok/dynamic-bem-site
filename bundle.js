@@ -6,6 +6,18 @@ var path = require('path'),
     vow = require('vow');
 
 /**
+ * @class Bundle
+ * @property {String} bundlesPath   Путь до всех бандлов
+ * @property {String} bundlePath    Путь до текущего бандла
+ * @property {String} BEMHTMLFile   Путь до BEMHTML-файла бандла
+ * @property {String} BEMTREEFile   Путь до BEMTREE-файла бандла
+ * @property {String} jsFile        Путь до JS-файла бандла
+ * @property {String} cssFile       Путь до CSS-файла бандла
+ * @property {Object} BEMHTML       Объект для работы с BEMHTML
+ * @property {Object} BEMTREE       Объект для работы с BEMTREE
+ */
+
+/**
  * Добавляет новый бандл
  * @param {String} name Имя бандла
  * @param {Object} [context] Объект переменных, которые будут доступны глобально в BEMTREE
@@ -13,28 +25,19 @@ var path = require('path'),
  * @constructor
  */
 function Bundle(name, context) {
+
     this.name = name;
     this.context = context || {};
+
+    this._setPath();
 }
 
 Bundle.prototype = {
 
     /**
-     * @typedef bundlePathInfo
-     * @type {Object}
-     * @property {String} bundlesPath Путь до всех бандлов
-     * @property {String} bundlePath Путь до текущего бандла
-     * @property {String} BEMHTMLFile Путь до BEMHTML-файла бандла
-     * @property {String} BEMTREEFile Путь до BEMTREE-файла бандла
-     * @property {String} jsFile Путь до JS-файла бандла
-     * @property {String} cssFile Путь до CSS-файла бандла
+     * Установить информацию по путям до директорий и файлов бандла
      */
-
-    /**
-     * Получить информацию по путям до директорий и файлов бандла
-     * @returns {bundlePathInfo} Объект с информацией по путям для бандла
-     */
-    getPath: function() {
+    _setPath: function() {
 
         var bundlesPath = path.join(__dirname, 'desktop.bundles'),
             bundlePath = path.join(bundlesPath, this.name),
@@ -42,33 +45,30 @@ Bundle.prototype = {
             BEMHTMLFile = path.join(bundlePath, this.name + '.bemhtml.js'),
             BEMTREEPath = path.join(bundlePath, this.name + '.bemtree.js');
 
-        return {
+        this.path = bundlePath;
 
-            bundlesPath: bundlesPath,
-            bundlePath: bundlePath,
+        this.BEMHTMLFile = BEMHTMLFile;
+        this.BEMTREEFile = BEMTREEPath;
 
-            BEMHTMLFile: BEMHTMLFile,
-            BEMTREEFile: BEMTREEPath,
-
-            jsFile: '_' + this.name + '.js',
-            cssFile: '_' + this.name + '.css'
-        };
+        this.jsFile = '_' + this.name + '.js';
+        this.cssFile = '_' + this.name + '.css';
     },
 
     /**
-     * Получить информацию по бандлу
-     * @property {Object} bundlePathInfo.BEMHTML Объект для работы с BEMHTML
-     * @property {Object} bundlePathInfo.BEMTREE Объект для работы с BEMTREE
-     * @returns {bundlePathInfo}
+     * Установить информацию по собранным файлам
      */
-    getInfo: function() {
+    setInfo: function() {
+        this.BEMHTML = require(this.BEMHTMLFile).BEMHTML;
+        this.BEMTREE = this._getBEMTREE();
+    },
 
-        var path = this.getPath();
-
-        path.BEMHTML = require(path.BEMHTMLFile).BEMHTML;
-        path.BEMTREE = this._getBEMTREE(path.BEMTREEFile);
-
-        return this.info = path;
+    /**
+     * Очистить собранные до этого файлы
+     * @private
+     */
+    _clearInfoCache: function() {
+        delete require.cache[this.BEMHTMLFile];
+        fs.existsSync(this.BEMTREEFile) && fs.unlinkSync(this.BEMTREEFile);
     },
 
     /**
@@ -79,10 +79,9 @@ Bundle.prototype = {
         return function(req, res, next) {
             if(process.env.NODE_ENV === 'production') { next(); return; }
 
-            var info = this.info || this.getInfo();
-            vow.when(bem.api.make({ verbosity: 'debug' }, [info.bundlePath])).then(function() {
-                delete require.cache[info.BEMHTMLPath];
-                this.info.BEMTREE = this._getBEMTREE(info.BEMTREEFile);
+            this._clearInfoCache();
+            vow.when(bem.api.make({ verbosity: 'debug' }, [this.path])).then(function() {
+                this.setInfo();
                 next();
             }.bind(this)).done();
         }.bind(this);
@@ -90,13 +89,12 @@ Bundle.prototype = {
 
     /**
      * Получить переменную BEMTREE с нужным контекстом
-     * @param {String} BEMTREEFile Путь до BEMTREE-файла бандла
      * @returns {Object}
      * @private
      */
-    _getBEMTREE: function(BEMTREEFile) {
+    _getBEMTREE: function() {
 
-        var BEMTREEContent = fs.readFileSync(BEMTREEFile, 'utf-8'),
+        var BEMTREEContent = fs.readFileSync(this.BEMTREEFile, 'utf-8'),
 
             context = bem.util.extend({
 

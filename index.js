@@ -5,19 +5,18 @@ var express = require('express'),
 
     Bundle = require('./bundle').Bundle,
     bundleIndex = new Bundle('index'),
-    bundleIndexInfo = bundleIndex.getInfo(),
 
     app = express();
 
 app.use(express.static(__dirname));
-app.use(express.static(bundleIndexInfo.bundlePath));
+app.use(express.static(bundleIndex.path));
 params.extend(app);
 
 app.param('id', Number);
 
 app.get('/:id?', bundleIndex.make(), sendContactsHTML);
 app.get('/api/contacts/:id?', sendContactsJSON);
-['/.bemjson', '/:id?.bemjson'].forEach(function(route) { app.get(route, sendContactsBEMJSON); });
+['/.bemjson', '/:id?.bemjson'].forEach(function(route) { app.get(route, bundleIndex.make(), sendContactsBEMJSON); });
 
 app.listen(3000, function() {
     console.log('Express server listening on port 3000');
@@ -30,7 +29,7 @@ app.listen(3000, function() {
  */
 function sendContactsHTML(req, res) {
     sendContacts(req, res, function(bemjson) {
-        return bundleIndexInfo.BEMHTML.apply(bemjson);
+        return bundleIndex.BEMHTML.apply(bemjson);
     });
 }
 
@@ -70,14 +69,14 @@ function sendContacts(req, res, sender) {
 
             params = {
                 block: 'page',
-                js: bundleIndexInfo.jsFile,
-                css: bundleIndexInfo.cssFile,
+                js: bundleIndex.jsFile,
+                css: bundleIndex.cssFile,
                 title: indexPage ? 'Все контакты' : data[0].name,
                 addButton: indexPage,
                 contacts: data
             };
 
-        return bundleIndexInfo.BEMTREE.apply(params).then(function(bemjson) {
+        return bundleIndex.BEMTREE.apply(params).then(function(bemjson) {
             res.send(sender.call(this, bemjson));
         });
     });
