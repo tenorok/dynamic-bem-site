@@ -1,0 +1,18 @@
+block('contacts')(
+
+    content().match(this.ctx.addButton)(function() {
+        this.ctx.content.push({ block: 'add-contact', content: 'Добавить контакт' });
+    }),
+
+    content()(function() {
+
+        var content = this.ctx.content;
+
+        content.forEach(function(contact) { contact.block = 'contact'; });
+        this.ctx.content = [{ elem: 'list', content: content }];
+
+        return applyNext();
+
+    })
+
+);

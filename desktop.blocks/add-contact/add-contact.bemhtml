@@ -1,0 +1,16 @@
+block('add-contact')(
+
+    js()(true),
+
+    content()(function() {
+        return {
+            elem: 'button',
+            mix: [{
+                block: 'button',
+                mods: { size: 'l', type: 'add' }
+            }],
+            content: this.ctx.content
+        };
+    })
+
+);

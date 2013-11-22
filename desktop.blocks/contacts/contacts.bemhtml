@@ -1,0 +1,1 @@
+block('contacts').js()(true);

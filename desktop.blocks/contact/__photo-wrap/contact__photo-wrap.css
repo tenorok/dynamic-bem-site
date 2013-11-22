@@ -1,0 +1,10 @@
+.contact__photo-wrap
+{
+    float: left;
+
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+
+    border: 1px solid #000;
+}

@@ -1,0 +1,12 @@
+.button_size_l
+{
+    padding: 14px 28px;
+
+    font-size: 16px;
+}
+
+.button_size_l:active
+{
+    padding-top: 15px;
+    padding-bottom: 13px;
+}

@@ -1,0 +1,17 @@
+.contact_customize_vip .contact__phone-button
+{
+    background: -webkit-linear-gradient(rgba(69, 56, 221, 0.64), rgba(4, 19, 131, 0.83));
+    background:    -moz-linear-gradient(rgba(69, 56, 221, 0.64), rgba(4, 19, 131, 0.83));
+    background:     -ms-linear-gradient(rgba(69, 56, 221, 0.64), rgba(4, 19, 131, 0.83));
+    background:      -o-linear-gradient(rgba(69, 56, 221, 0.64), rgba(4, 19, 131, 0.83));
+    background:         linear-gradient(rgba(69, 56, 221, 0.64), rgba(4, 19, 131, 0.83));
+}
+
+.contact_customize_vip .contact__phone-button:hover
+{
+    background: -webkit-linear-gradient(rgba(69, 56, 221, 0.54), rgba(4, 19, 131, 0.73));
+    background:    -moz-linear-gradient(rgba(69, 56, 221, 0.54), rgba(4, 19, 131, 0.73));
+    background:     -ms-linear-gradient(rgba(69, 56, 221, 0.54), rgba(4, 19, 131, 0.73));
+    background:      -o-linear-gradient(rgba(69, 56, 221, 0.54), rgba(4, 19, 131, 0.73));
+    background:         linear-gradient(rgba(69, 56, 221, 0.54), rgba(4, 19, 131, 0.73));
+}

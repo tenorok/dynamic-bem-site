@@ -1,0 +1,33 @@
+.button
+{
+    padding: 6px 14px;
+
+    cursor: pointer;
+
+    color: #fff;
+    border-width: 0 0 1px 0;
+    border-color: #262D21;
+    border-radius: 14px;
+    background: -webkit-linear-gradient(rgba(90, 152, 0, 0.64), rgba(23, 95, 0, 0.83));
+    background:    -moz-linear-gradient(rgba(90, 152, 0, 0.64), rgba(23, 95, 0, 0.83));
+    background:     -ms-linear-gradient(rgba(90, 152, 0, 0.64), rgba(23, 95, 0, 0.83));
+    background:      -o-linear-gradient(rgba(90, 152, 0, 0.64), rgba(23, 95, 0, 0.83));
+    background:         linear-gradient(rgba(90, 152, 0, 0.64), rgba(23, 95, 0, 0.83));
+
+    font-family: arial, sans-serif;
+}
+
+.button:hover
+{
+    background: -webkit-linear-gradient(rgba(90, 152, 0, 0.54), rgba(23, 95, 0, 0.73));
+    background:    -moz-linear-gradient(rgba(90, 152, 0, 0.54), rgba(23, 95, 0, 0.73));
+    background:     -ms-linear-gradient(rgba(90, 152, 0, 0.54), rgba(23, 95, 0, 0.73));
+    background:      -o-linear-gradient(rgba(90, 152, 0, 0.54), rgba(23, 95, 0, 0.73));
+    background:         linear-gradient(rgba(90, 152, 0, 0.54), rgba(23, 95, 0, 0.73));
+}
+
+.button:active
+{
+    padding-top: 7px;
+    padding-bottom: 5px;
+}

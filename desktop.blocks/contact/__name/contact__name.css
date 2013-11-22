@@ -1,0 +1,12 @@
+.contact__name
+{
+    overflow: hidden;
+
+    margin-bottom: 6px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    font-size: 18px;
+    line-height: 1.3;
+}
