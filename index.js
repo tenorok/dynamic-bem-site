@@ -69,8 +69,8 @@ function sendContacts(req, res, sender) {
 
             params = {
                 block: 'page',
-                js: bundleIndex.jsFile,
-                css: bundleIndex.cssFile,
+                js: bundleIndex.jsFileName,
+                css: bundleIndex.cssFileName,
                 title: indexPage ? 'Все контакты' : data[0].name,
                 addButton: indexPage,
                 contacts: data

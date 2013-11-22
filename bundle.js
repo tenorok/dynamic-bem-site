@@ -11,6 +11,8 @@ var path = require('path'),
  * @property {String} bundlePath    Путь до текущего бандла
  * @property {String} BEMHTMLFile   Путь до BEMHTML-файла бандла
  * @property {String} BEMTREEFile   Путь до BEMTREE-файла бандла
+ * @property {String} jsFileName    Имя JS-файла бандла
+ * @property {String} cssFileName   Имя CSS-файла бандла
  * @property {String} jsFile        Путь до JS-файла бандла
  * @property {String} cssFile       Путь до CSS-файла бандла
  * @property {Object} BEMHTML       Объект для работы с BEMHTML
@@ -40,18 +42,20 @@ Bundle.prototype = {
     _setPath: function() {
 
         var bundlesPath = path.join(__dirname, 'desktop.bundles'),
-            bundlePath = path.join(bundlesPath, this.name),
-
-            BEMHTMLFile = path.join(bundlePath, this.name + '.bemhtml.js'),
-            BEMTREEPath = path.join(bundlePath, this.name + '.bemtree.js');
+            bundlePath = path.join(bundlesPath, this.name);
 
         this.path = bundlePath;
 
-        this.BEMHTMLFile = BEMHTMLFile;
-        this.BEMTREEFile = BEMTREEPath;
+        this.BEMHTMLFile = path.join(bundlePath, this.name + '.bemhtml.js');
+        this.BEMTREEFile = path.join(bundlePath, this.name + '.bemtree.js');
 
-        this.jsFile = '_' + this.name + '.js';
-        this.cssFile = '_' + this.name + '.css';
+        this.depsFile = path.join(bundlePath, this.name + '.deps.js');
+
+        this.jsFileName = '_' + this.name + '.js';
+        this.cssFileName = '_' + this.name + '.css';
+
+        this.jsFile = path.join(bundlePath, this.jsFileName);
+        this.cssFile = path.join(bundlePath, this.cssFileName);
     },
 
     /**
@@ -68,7 +72,10 @@ Bundle.prototype = {
      */
     _clearInfoCache: function() {
         delete require.cache[this.BEMHTMLFile];
-        fs.existsSync(this.BEMTREEFile) && fs.unlinkSync(this.BEMTREEFile);
+        [this.BEMTREEFile, this.depsFile, this.jsFile, this.cssFile].forEach(function(file) {
+            if(!fs.existsSync(file)) return;
+            fs.unlinkSync(file);
+        });
     },
 
     /**
