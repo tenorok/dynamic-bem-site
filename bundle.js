@@ -84,7 +84,11 @@ Bundle.prototype = {
      */
     make: function() {
         return function(req, res, next) {
-            if(process.env.NODE_ENV === 'production') { next(); return; }
+            if(process.env.NODE_ENV === 'production') {
+                this.setInfo();
+                next();
+                return;
+            }
 
             this._clearInfoCache();
             vow.when(bem.api.make({ verbosity: 'debug' }, [this.path])).then(function() {
