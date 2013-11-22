@@ -10,7 +10,6 @@
     cd dynamic-bem-site
     npm install
     ./node_modules/.bin/bem make libs
-    ./node_modules/.bin/bem make desktop.bundles/index
     
 В качестве базы данных используется [mongodb](http://www.mongodb.org/). Следующей командой можно добавить примерные данные для сайта.
 
