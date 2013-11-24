@@ -1,4 +1,4 @@
-modules.define('i-bem__dom', ['i-bem'], function(provide, BEM, DOM) {
+modules.define('i-bem__dom', function(provide, DOM) {
 
 /**
  * @namespace
@@ -21,7 +21,7 @@ DOM.decl('contacts', /** @lends Contacts.prototype */ {
      * Подписаться на событие разворачивания детальной информации по контакту
      */
     listenShowContact: function() {
-        BEM.blocks['contact'].on(this.domElem, 'show', this.hideAllDetails.bind(this));
+        DOM.blocks['contact'].on(this.domElem, 'show', this.hideAllDetails, this);
     },
 
     /**
@@ -29,7 +29,7 @@ DOM.decl('contacts', /** @lends Contacts.prototype */ {
      */
     listenAddContact: function() {
         var addContact = this.findBlockInside('add-contact');
-        if(addContact) addContact.on('add', this.addContact.bind(this));
+        if(addContact) addContact.on('add', this.addContact, this);
     },
 
     /**
