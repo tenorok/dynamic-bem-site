@@ -1,10 +1,10 @@
-modules.define('i-bem__dom', function(provide, DOM) {
+modules.define('i-bem__dom', function(provide, BEMDOM) {
 
 /**
  * @namespace
  * @name Contacts
  */
-DOM.decl('contacts', /** @lends Contacts.prototype */ {
+BEMDOM.decl('contacts', /** @lends Contacts.prototype */ {
 
     onSetMod: {
 
@@ -21,7 +21,7 @@ DOM.decl('contacts', /** @lends Contacts.prototype */ {
      * Подписаться на событие разворачивания детальной информации по контакту
      */
     listenShowContact: function() {
-        DOM.blocks['contact'].on(this.domElem, 'show', this.hideAllDetails, this);
+        BEMDOM.blocks['contact'].on(this.domElem, 'show', this.hideAllDetails, this);
     },
 
     /**
@@ -52,6 +52,6 @@ DOM.decl('contacts', /** @lends Contacts.prototype */ {
 
 });
 
-provide(DOM);
+provide(BEMDOM);
 
 });

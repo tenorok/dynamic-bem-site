@@ -1,10 +1,10 @@
-modules.define('i-bem__dom', function(provide, DOM) {
+modules.define('i-bem__dom', function(provide, BEMDOM) {
 
 /**
  * @namespace
  * @name Contact
  */
-DOM.decl('contact', /** @lends Contact.prototype */ {
+BEMDOM.decl('contact', /** @lends Contact.prototype */ {
 
     getDefaultParams: function() {
         return {
@@ -57,6 +57,6 @@ DOM.decl('contact', /** @lends Contact.prototype */ {
 
 });
 
-provide(DOM);
+provide(BEMDOM);
 
 });
