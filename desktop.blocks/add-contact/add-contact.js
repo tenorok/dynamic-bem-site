@@ -1,10 +1,10 @@
-modules.define('i-bem__dom', ['jquery', 'BEMHTML'], function(provide, $, BEMHTML, DOM) {
+modules.define('i-bem__dom', ['jquery', 'BEMHTML'], function(provide, $, BEMHTML, BEMDOM) {
 
 /**
 * @namespace
 * @name Add-contact
 */
-DOM.decl('add-contact', /** @lends Add-contact.prototype */ {}, /** @lends Add-contact */ {
+BEMDOM.decl('add-contact', /** @lends Add-contact.prototype */ {}, /** @lends Add-contact */ {
 
     live: function() {
 
@@ -29,6 +29,6 @@ DOM.decl('add-contact', /** @lends Add-contact.prototype */ {}, /** @lends Add-c
 
 });
 
-provide(DOM);
+provide(BEMDOM);
 
 });
