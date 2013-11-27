@@ -2,7 +2,7 @@ block('contact')(
 
     js()(true),
 
-    match(this.ctx.customize)(function() {
+    match(function() { return this.ctx.customize; })(function() {
         this.ctx.mods = { customize: this.ctx.customize };
         applyNext();
     }),

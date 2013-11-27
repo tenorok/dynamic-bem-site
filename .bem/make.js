@@ -33,14 +33,12 @@ MAKE.decl('BundleNode', {
     getTechs: function() {
 
         return [
-            'bemjson.js',
             'bemdecl.js',
             'deps.js',
             'bemhtml',
             'bemtree',
             'browser.js+bemhtml',
-            'css',
-            'html'
+            'css'
         ];
 
     },

@@ -1,7 +1,11 @@
 block('contacts')(
 
-    content().match(this.ctx.addButton)(function() {
+    content().match(this.ctx.index)(function() {
         this.ctx.content.push({ block: 'add-contact', content: 'Добавить контакт' });
+    }),
+
+    content().match(!this.ctx.index)(function() {
+        this.ctx.content[0].content.forEach(function(contact) { contact.mods = { details: true }; });
     }),
 
     content()(function() {

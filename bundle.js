@@ -1,6 +1,7 @@
 var path = require('path'),
     fs = require('fs'),
     vm = require('vm'),
+    exec = require('child_process').exec,
 
     bem = require('bem'),
     vow = require('vow');
@@ -67,34 +68,26 @@ Bundle.prototype = {
     },
 
     /**
-     * Очистить собранные до этого файлы
-     * @private
-     */
-    _clearInfoCache: function() {
-        delete require.cache[this.BEMHTMLFile];
-        [this.BEMTREEFile, this.depsFile, this.jsFile, this.cssFile].forEach(function(file) {
-            if(!fs.existsSync(file)) return;
-            fs.unlinkSync(file);
-        });
-    },
-
-    /**
      * Собрать бандл
      * @returns {Function}
      */
     make: function() {
         return function(req, res, next) {
+
             if(process.env.NODE_ENV === 'production') {
                 this.setInfo();
                 next();
                 return;
             }
 
-            this._clearInfoCache();
-            vow.when(bem.api.make({ verbosity: 'debug' }, [this.path])).then(function() {
+            process.env.BEMHTML_ENV = 'development';
+
+            // TODO: Перевести на bem.api (https://github.com/bem/bem-tools/issues/519)
+            exec('./node_modules/.bin/bem make desktop.bundles/index', function() {
                 this.setInfo();
                 next();
-            }.bind(this)).done();
+            }.bind(this)).stdout.pipe(process.stdout);
+
         }.bind(this);
     },
 
