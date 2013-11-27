@@ -9,7 +9,7 @@ block('page').def()(function() {
         ],
         content: {
             block: 'contacts',
-            addButton: this.ctx.addButton,
+            index: this.ctx.index,
             content: this.ctx.contacts
         }
     };

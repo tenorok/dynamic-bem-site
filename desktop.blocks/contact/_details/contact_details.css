@@ -7,3 +7,8 @@
 {
     white-space: normal;
 }
+
+.contact_details .contact__more
+{
+    display: block;
+}
