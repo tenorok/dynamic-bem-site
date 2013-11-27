@@ -16,7 +16,7 @@ app.param('id', Number);
 
 app.get('/:id?', bundleIndex.make(), sendContactsHTML);
 app.get('/api/contacts/:id?', sendContactsJSON);
-['/.bemjson', '/:id?.bemjson'].forEach(function(route) { app.get(route, bundleIndex.make(), sendContactsBEMJSON); });
+['/.bemjson', '/:id.bemjson'].forEach(function(route) { app.get(route, bundleIndex.make(), sendContactsBEMJSON); });
 
 app.listen(3000, function() {
     console.log('Express server listening on port 3000');
