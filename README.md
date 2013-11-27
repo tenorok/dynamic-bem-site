@@ -2,7 +2,7 @@
 
 ## Результат
 
-[Собранная рабочая страничка](http://tenorok.github.io/shri-bem-practice/index/)
+[Демо](http://tenorok.github.io/shri-bem-practice/index/)
 
 ## Запуск
 
