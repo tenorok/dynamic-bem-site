@@ -1,9 +1,9 @@
 var path = require('path'),
     fs = require('fs'),
     vm = require('vm'),
-    exec = require('child_process').exec,
 
     bem = require('bem'),
+    bemLevel = bem.require('./level'),
     vow = require('vow');
 
 /**
@@ -82,11 +82,11 @@ Bundle.prototype = {
 
             process.env.BEMHTML_ENV = 'development';
 
-            // TODO: Перевести на bem.api (https://github.com/bem/bem-tools/issues/519)
-            exec('./node_modules/.bin/bem make desktop.bundles/index', function() {
+            bemLevel.resetLevelsCache();
+            bem.api.make({ verbosity: 'debug' }, [this.path]).then(function() {
                 this.setInfo();
                 next();
-            }.bind(this)).stdout.pipe(process.stdout);
+            }.bind(this)).done();
 
         }.bind(this);
     },
