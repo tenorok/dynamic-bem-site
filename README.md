@@ -4,6 +4,12 @@
 
 [Демо](http://tenorok.github.io/shri-bem-practice/index/)
 
+## Необходимые инструменты
+
+[Node.js](http://nodejs.org/)
+[NPM](http://npmjs.org/)
+[MongoDB](http://docs.mongodb.org/manual/installation/)
+
 ## Запуск
 
     git clone git@github.com:tenorok/dynamic-bem-site.git
