@@ -63,6 +63,7 @@ Bundle.prototype = {
      * Установить информацию по собранным файлам
      */
     setInfo: function() {
+        delete require.cache[this.BEMHTMLFile];
         this.BEMHTML = require(this.BEMHTMLFile).BEMHTML;
         this.BEMTREE = this._getBEMTREE();
     },
