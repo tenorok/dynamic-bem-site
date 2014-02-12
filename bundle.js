@@ -42,9 +42,11 @@ Bundle.prototype = {
      */
     _setPath: function() {
 
-        var bundlesPath = path.join(__dirname, 'desktop.bundles'),
-            bundlePath = path.join(bundlesPath, this.name);
+        var bundlesPath = 'desktop.bundles',
+            relativeBundlePath = path.join(bundlesPath, this.name),
+            bundlePath = path.join(__dirname, relativeBundlePath);
 
+        this.relativePath = relativeBundlePath;
         this.path = bundlePath;
 
         this.BEMHTMLFile = path.join(bundlePath, this.name + '.bemhtml.js');
@@ -84,7 +86,7 @@ Bundle.prototype = {
             process.env.BEMHTML_ENV = 'development';
 
             bemLevel.resetLevelsCache();
-            bem.api.make({ verbosity: 'debug' }, [this.path]).then(function() {
+            bem.api.make({ verbosity: 'debug' }, {targets: [this.relativePath]}).then(function() {
                 this.setInfo();
                 next();
             }.bind(this)).done();
